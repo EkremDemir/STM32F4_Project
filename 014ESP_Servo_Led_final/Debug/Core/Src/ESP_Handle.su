@@ -1,0 +1,3 @@
+../Core/Src/ESP_Handle.c:61:6:ESP_Init	8	static
+../Core/Src/ESP_Handle.c:171:6:ESP_Server_Start	24	static
+../Core/Src/ESP_Handle.c:281:5:ESP_Server_Send	120	static

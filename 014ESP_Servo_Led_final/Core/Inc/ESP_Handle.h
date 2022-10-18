@@ -1,0 +1,18 @@
+/*
+ * ESP_Handle.h
+ *
+ *  Created on: Oct 12, 2022
+ *      Author: ekrm5
+ */
+
+#ifndef INC_ESP_HANDLE_H_
+#define INC_ESP_HANDLE_H_
+
+
+
+void ESP_Init(void);
+void ESP_Server_Start(void);
+int ESP_Server_Send(char *str, int id);
+
+
+#endif /* INC_ESP_HANDLE_H_ */
