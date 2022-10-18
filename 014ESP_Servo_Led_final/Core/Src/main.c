@@ -23,13 +23,18 @@ uint32_t ccr_content;
 void SystemClock_Config(void);
 void Error_handler(void);
 
-
+//Timer initialization for PWM  feature
 void TIMER2_Init(void);
+
+//UART initialization for serial communication of ESP8266 wifi module
 void UART2_Init(void);
+
+//UART initialization for serial communication of USB-TTL coverter. 
+//Purpose of USB-TTL is to observe the flow of the code
 void UART1_Init(void);
+
+//GPIO initialization of pin for LEDs
 void GPIO_Init(void);
-
-
 
 
 
@@ -195,11 +200,6 @@ void UART1_Init(void)
 		Error_handler();
 	}
 }
-
-
-
-
-
 
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
