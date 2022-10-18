@@ -27,11 +27,11 @@ void Error_handler(void);
 void TIMER2_Init(void);
 
 //UART initialization for serial communication of ESP8266 wifi module
-void UART2_Init(void);
+void UART1_Init(void);
 
 //UART initialization for serial communication of USB-TTL coverter. 
 //Purpose of USB-TTL is to observe the flow of the code
-void UART1_Init(void);
+void UART2_Init(void);
 
 //GPIO initialization of pin for LEDs
 void GPIO_Init(void);
@@ -40,6 +40,8 @@ void GPIO_Init(void);
 
 char TempRx[1] = {0};
 bool state = false;
+
+//holds data of WIFI module
 extern char Rx_Buffer[100];
 extern int  Rx_index;
 char *temp = NULL;
@@ -57,18 +59,20 @@ int main(void)
 
 	UART2_Init();
 	UART1_Init();
-
+	
+	//Start PWM for channel 1 and channel 2
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-
-
+	
+	//Start the interrput for serial communication
 	HAL_UART_Receive_IT(&huart1,(uint8_t*)TempRx, 1);
-
-
+	
+	//Initialize Wifi module for "AT" commands of WIFI
 	ESP_Init();
 
 	while(1)
 	{
+		//Start the communication and process the data 
 		ESP_Server_Start();
 
 	}
@@ -215,13 +219,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	}
 }
-
-
-
-
-
-
-
 
 void Error_handler(void)
 {
