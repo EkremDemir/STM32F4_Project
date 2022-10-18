@@ -27,6 +27,8 @@ extern TIM_HandleTypeDef htim2;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart1;
 
+
+//HTML text
 char *Basic_inclusion = "<!DOCTYPE HTML><html><head>\
     <title>ESP Input Form</title>\
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\
@@ -172,22 +174,22 @@ void ESP_Server_Start(void)
 {
     //HAL_UART_Receive_IT(&huart1,(uint8_t*)TempRx, 1);
     int id = 0;
-
+    
+    //Wait until an interaction occur in server, if there is an interaction "HTTP" text will received by UART1
     while(!isSubString(Rx_Buffer, "HTTP"));
-    id = get_id();
-    //while()
-
-
-
+    id = get_id(); //get the ID of device which is connected to server
+    
+    //Print the received text to the PC using UART2
     HAL_UART_Transmit_IT(&huart2,(uint8_t*)Rx_Buffer,BUFFER_SIZE);
-
-
+    
+    //If received data consist of "pin=on", open the LED
     if(isSubString(Rx_Buffer, "pin=on"))
     {
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
 
 
     }
+    //If received data consist of "pin=OFF", close the LED
     else if(isSubString(Rx_Buffer, "pin=off"))
     {
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
@@ -195,6 +197,7 @@ void ESP_Server_Start(void)
 
 
     }
+    //If received data consist of "motor_a", turn the servo motor_a in the desired angle and speed
     else if(isSubString(Rx_Buffer, "motor_a"))
     {
         angle = get_number(Rx_Buffer);
@@ -224,6 +227,7 @@ void ESP_Server_Start(void)
             previousAngle_a = angle;
         }
     }
+    //If received data consist of "motor_b", turn the servo motor_b in the desired angle and speed
     else if(isSubString(Rx_Buffer, "motor_b"))
     {
 
@@ -255,18 +259,11 @@ void ESP_Server_Start(void)
         }
 
     }
-
+    //If received data consist of "favicon.ico", do nothing
     else if((isSubString(Rx_Buffer, "favicon.ico")) == 1)
     {
         HAL_Delay(50);
         clear_Rxbuffer();
-
-    }
-
-    else
-    {
-        HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
-
 
     }
 
@@ -278,6 +275,7 @@ void ESP_Server_Start(void)
 }
 
 
+//This function is not used in the prototype of the projcet, this code piece is for future feature
 int ESP_Server_Send(char *str, int id)
 {
     int len = strlen(str);
